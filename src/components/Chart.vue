@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     getApi: function() {
-      axios.get('http://0.0.0.0:3000/')
+      axios.get('https://protected-savannah-47772.herokuapp.com/')
         .then(response => {
           response.data.forEach(item => {
             this.barChartData.rows.push({
