@@ -1,6 +1,6 @@
 <template>
 <div class="chart">
-  <ve-bar :data="barChartData"></ve-bar>
+  <ve-bar :data="barChartData" :judge-width="true" height="800px"></ve-bar>
 </div>
 </template>
 
@@ -13,24 +13,9 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       barChartData: {
         columns: ['name', 'articlesNumber'],
-        rows: []
+        rows: [],
+        height: '800px'
       },
-      contrastName: {
-        jasonyangbanana: 'Jason',
-        ken09326329: 'Kai',
-        soj: 'soj',
-        tedlee: 'Ted',
-        lai0706: 'Lai',
-        andyka1714: 'Andy',
-        albert194: 'Albery',
-        chris47: 'Chris',
-        gg831006: 'Jeremy',
-        serendipity: 'Ray',
-        mangosu: 'Mango',
-        henry97113: 'Henry',
-        oklalala: 'TonyLin',
-        leiadot: '日安'
-      }
     }
   },
   methods: {
@@ -39,25 +24,17 @@ export default {
         .then(response => {
           response.data.forEach(item => {
             this.barChartData.rows.push({
-              'name': this.nameChange(item.name),
+              'name': item.name,
               'articlesNumber': item.posts
             })
           })
           console.log(response.data)
+          console.log(this.barChartData.rows)
         })
         .catch(error => {
           console.log(error)
         })
     },
-    nameChange: function(account) {
-      let accountArray = account.split("")
-      let name = []
-      for (let i = (accountArray.indexOf("(") + 1); i < accountArray.indexOf(")"); i++) {
-        name.push(accountArray[i])
-      }
-      name = name.join("")
-      return this.contrastName[name]
-    }
   },
   mounted: function() {
     this.getApi()
@@ -65,7 +42,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 h1,
 h2 {
