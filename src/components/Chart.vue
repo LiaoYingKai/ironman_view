@@ -1,43 +1,85 @@
 <template>
 <div class="chart">
-  <ve-bar :data="barChartData" :judge-width="true" height="800px"></ve-bar>
+  <ve-bar :data="chartData" :judge-width="true" height="800px" :extend="chartExtend"></ve-bar>
 </div>
 </template>
 
 <script>
 import axios from 'axios';
+import moment from 'moment'
+
+var post = this.needPost
 export default {
   name: 'chart',
+  props: ['needPost'],
   data() {
+    this.chartExtend = {
+      series(s) {
+        s[0].data = s[0].data.map(item => {
+          if (item < day()) {
+            return {
+              value: parseInt(item),
+              itemStyle: {
+                color: 'red'
+              }
+            }
+          } else {
+            if (item == 30) {
+              return {
+                value: parseInt(item),
+                itemStyle: {
+                  opacity: 0,
+                },
+              }
+            } else {
+              return {
+                value: parseInt(item),
+                itemStyle: {
+                  color: '#8bc34a',
+                  opacity: 0.25,
+                }
+              }
+            }
+          }
+        })
+        console.log('> ', s)
+
+        function day() {
+          let day = moment("20181015", "YYYYMMDD").fromNow().split("")
+          let todayPostNumber = []
+          todayPostNumber.push(day[0], day[1])
+          return (parseInt(todayPostNumber.join('')) - 1);
+        }
+        return s
+      }
+    }
     return {
-      msg: 'Welcome to Your Vue.js App',
-      barChartData: {
-        columns: ['name', 'articlesNumber'],
+      chartData: {
+        columns: ['name', 'posts'],
         rows: [],
-        height: '800px'
       },
     }
   },
-  methods: {
-    getApi: function() {
-      axios.get('https://protected-savannah-47772.herokuapp.com/')
-        .then(response => {
-          response.data.forEach(item => {
-            this.barChartData.rows.push({
-              'name': item.name,
-              'articlesNumber': item.posts
-            })
-          })
-          console.log(response.data)
-          console.log(this.barChartData.rows)
+  created: function() {
+    axios.get('https://protected-savannah-47772.herokuapp.com/')
+      .then(response => {
+        this.chartData.rows = response.data.map(item => ({
+          name: item.name,
+          posts: item.posts
+        }))
+        this.chartData.rows.sort(function(a, b) {
+          console.log(">", a)
+          console.log(">>>>>", b)
+          return b.posts - a.posts
         })
-        .catch(error => {
-          console.log(error)
+        this.chartData.rows.push({
+          name: "參賽者",
+          posts: 30
         })
-    },
-  },
-  mounted: function() {
-    this.getApi()
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 }
 </script>

@@ -4,7 +4,7 @@
     好想工作室個人文章累計現況 </br>今天要累積
     <span>{{day-1}}</span>篇文
   </div>
-  <Chart/>
+  <Chart :needPost="day-1" />
 </div>
 </template>
 
@@ -21,7 +21,7 @@ export default {
       let day = moment("20181015", "YYYYMMDD").fromNow().split("")
       let todayPostNumber = []
       todayPostNumber.push(day[0], day[1])
-      return todayPostNumber.join('');
+      return parseInt(todayPostNumber.join(''));
     }
   }
 }
