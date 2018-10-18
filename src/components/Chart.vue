@@ -1,12 +1,13 @@
 <template>
 <div class="chart">
-  <ve-bar :data="chartData" :judge-width="true" height="800px" :extend="chartExtend"></ve-bar>
+  <ve-bar :data="chartData" :judge-width="true" height="800px" :extend="chartExtend" :loading="!chartData.rows.length"></ve-bar>
 </div>
 </template>
 
 <script>
 import axios from 'axios';
 import moment from 'moment'
+import 'v-charts/lib/style.css'
 
 var post = this.needPost
 export default {
