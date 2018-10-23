@@ -43,13 +43,13 @@ export default {
             }
           }
         })
-        console.log('> ', s)
 
         function day() {
-          let day = moment("20181015", "YYYYMMDD").fromNow().split("")
-          let todayPostNumber = []
-          todayPostNumber.push(day[0], day[1])
-          return (parseInt(todayPostNumber.join('')) - 1);
+          var start = moment("20181015")
+          var end = moment()
+          var diffDays = start.diff(end, 'days')
+
+          return Math.abs(diffDays);
         }
         return s
       }
@@ -69,8 +69,6 @@ export default {
           posts: item.posts
         }))
         this.chartData.rows.sort(function(a, b) {
-          console.log(">", a)
-          console.log(">>>>>", b)
           return b.posts - a.posts
         })
         this.chartData.rows.push({

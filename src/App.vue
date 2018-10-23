@@ -2,9 +2,9 @@
 <div id="app">
   <div class="title">
     好想工作室個人文章累計現況 </br>今天要累積
-    <span>{{day-1}}</span>篇文
+    <span>{{day}}</span>篇文
   </div>
-  <Chart :needPost="day-1" />
+  <Chart :needPost="day" />
 </div>
 </template>
 
@@ -18,10 +18,11 @@ export default {
   },
   computed: {
     day: function() {
-      let day = moment("20181015", "YYYYMMDD").fromNow().split("")
-      let todayPostNumber = []
-      todayPostNumber.push(day[0], day[1])
-      return parseInt(todayPostNumber.join(''));
+      var start = moment("20181015")
+      var end = moment()
+      var diffDays = start.diff(end, 'days')
+
+      return Math.abs(diffDays);
     }
   }
 }
